@@ -1,9 +1,17 @@
 package com.qa.stepDefinition;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.qa.base.TestBase;
 import com.qa.pages.HomePage;
 import com.qa.pages.LoginPage;
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
 
+import cucumber.api.java.After;
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -13,6 +21,48 @@ public class HomePageStep extends TestBase {
 
 	LoginPage loginpageobj;
 	HomePage homepage;
+	public static ExtentReports reports;
+	   public static ExtentTest test;
+//	   
+//	   public HomePageStep()
+//	   {
+//		   DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");	   
+//			Date date = new Date(); 	 
+//			String ReportName= "CRReport"+"_"+dateFormat.format(date);		
+//			reports=new ExtentReports("..\\POMWithBDDFramework\\Reports\\" + ReportName + ".html");
+//	   }
+	@Before()
+	public static void startTest()
+	
+	{
+	
+reports = new ExtentReports(System.getProperty("user.dir")+"\\ExtentReportResults.html");
+//	reports
+//    .addSystemInfo("Host Name", "CucumberProject")
+//    .addSystemInfo("Environment", "Automation Testing")
+//    .addSystemInfo("User Name", "CucumberUser");
+	
+//	test = reports.startTest("HomePageStep");
+		reports.addSystemInfo("username", "viji");
+			
+	}
+
+	
+	@After()
+	public static void endTest()
+	
+	{
+		
+	
+	reports.endTest(test);
+	
+	reports.flush();
+	
+	}
+	
+	
+
+	
 
 	@Given("^open browser$")
 	public void user_open_browser() throws Throwable {
@@ -56,6 +106,7 @@ public class HomePageStep extends TestBase {
 		
 boolean flag=homepage.validateUserLabel();
 Assert.assertTrue(flag);
+
 
 	}
 

@@ -7,8 +7,10 @@ import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
+		plugin = {"com.cucumber.listener.ExtentCucumberFormatter:target/cucumber-reports/report.html"},
  features = "C:\\Users\\vraja\\workspace\\POMWithBDDFramework\\src\\main\\java\\com\\qa\\features\\freecrm.feature"
- ,glue={"com/qa/stepDefinition"},format = { "pretty","html:test-output" ,
+ ,glue={"com/qa/stepDefinition"},
+ format = { "pretty","html:test-output" ,
 		 "json:jsonreport/cucumber.json","junit:juit_xmlreport/cucumber.xml"},
  dryRun = false, monochrome=true,strict=true
  )
