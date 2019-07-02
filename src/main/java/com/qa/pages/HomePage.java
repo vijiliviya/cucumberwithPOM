@@ -11,7 +11,7 @@ import com.qa.base.TestBase;
 
 public class HomePage extends TestBase {
 	
-	@FindBy(xpath="//span[text()='vijayalakshmi R']//parent::div[@class='right menu']")
+	@FindBy(xpath="//span[text()='vijalakshmi R']//parent::div[@class='right menu']")
 	@CacheLookup
 	WebElement userNameLabel;
 	@FindBy(xpath="//span[text()='Contacts']")

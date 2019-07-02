@@ -1,6 +1,7 @@
 package com.qa.stepDefinition;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +10,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
 import com.cucumber.listener.Reporter;
+import com.google.common.io.Files;
 import com.qa.base.TestBase;
 import com.qa.pages.HomePage;
 import com.qa.pages.LoginPage;
@@ -38,69 +40,52 @@ public class HomePageStep extends TestBase {
 //			Date date = new Date(); 	 
 //			String ReportName= "CRReport"+"_"+dateFormat.format(date);		
 //			reports=new ExtentReports("..\\POMWithBDDFramework\\Reports\\" + ReportName + ".html");
-//	   }
+////	   }
 	@Before()
 	public static void startTest()
-	
-	{
-//		Reporter.setSystemInfo("User Name", System.getProperty("user.name"));
-//	     Reporter.setSystemInfo("Time Zone", System.getProperty("user.timezone"));
-//	     Reporter.setSystemInfo("Machine",prop.getProperty("username") );
-//	     Reporter.setSystemInfo("Selenium", "3.7.0");
-//	     Reporter.setSystemInfo("Maven", "3.5.2");
-//	     Reporter.setSystemInfo("Java Version", "1.8.0_151");
-		
-//reports = new ExtentReports(System.getProperty("user.dir")+"\\ExtentReportResults.html");
-//	reports
-//    .addSystemInfo("Host Name", "CucumberProject")
-//    .addSystemInfo("Environment", "Automation Testing")
-//    .addSystemInfo("User Name", "CucumberUser");
-	
-//	test = reports.startTest("HomePageStep");
-		//reports.addSystemInfo("username", "viji");
-			
-	}
 
+	{
+		System.out.println("before");
 	
-	//@After()
-//	public static void endTest()
-//	
-//	{
-//		
-//		Reporter.loadXMLConfig(new File("C:\\Users\\vraja\\workspace\\POMWithBDDFramework\\src\\main\\java\\com\\qa\\resources\\extent-config.xml"));
-//		//Reporter.setSystemInfo("Test User", System.getProperty("user.name"));
-//		Reporter.setSystemInfo("User Name", "AJ");
-//		Reporter.setSystemInfo("Application Name", "Test App ");
-//		Reporter.setSystemInfo("Operating System Type", System.getProperty("os.name").toString());
-//		Reporter.setSystemInfo("Environment", "Production");
-//		Reporter.setTestRunnerOutput("Test Execution Cucumber Report");
-//		}
-//		
+	}
+	
+	
+	
+	@After()
+	public void afterScenario(Scenario scenario) throws IOException{
+		if (scenario.isFailed()) 
+
+		{
+			//This takes a screenshot from the driver at save it to the specified location
+			 String screenshotName = scenario.getName().replaceAll(" ", "_");
 		
-	
-	//reports.endTest(test);
-	
-	//reports.flush();
-	
-	
-	
-	@After
-	public void afterScenario(Scenario scenario){
-	    try{
-	        if(scenario.isFailed()){
-	            // More code goes here.
-	        	TestBase.getScreenshot();
-	        }else {
-	            //------------------------- Attaching Screen shot in the Report -------------------------
-	            byte[] screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
-	            scenario.embed(screenshot, "image/png");
-	            TestBase.getScreenshot();
-	        }
-	        //ExtentManager.getReporter().flush();
-	    }
-	    catch(Exception e){
-	        scenario.write("WARNING. Failed to take screenshot with following exception : "+e.getMessage());
-	    }
+		File sourcePath = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE); 
+		//Building up the destination path for the screenshot to save
+		 //Also make sure to create a folder 'screenshots'
+		File destinationPath = new File(System.getProperty("user.dir") + "/screenshot/" + screenshotName + ".png");
+
+		 //Copy taken screenshot from source location to destination location
+		Files.copy(sourcePath, destinationPath); 
+		//This attach the specified screenshot to the test
+		Reporter.addScreenCaptureFromPath(destinationPath.toString());
+		}
+//	    try{
+//	        if(scenario.isFailed()){
+//	            // More code goes here.
+//	        	
+//	        }else {
+//	            //------------------------- Attaching Screen shot in the Report -------------------------
+////	            byte[] screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
+////	            scenario.embed(screenshot, "image/png");
+//	            TestBase.getScreenshot();
+//	        }
+//	        //ExtentManager.getReporter().flush();
+//	    }
+//	    catch(Exception e){
+//	        scenario.write("WARNING. Failed to take screenshot with following exception : "+e.getMessage());
+//	    }
+		
+		System.out.println("after");
 	}
 
 	
