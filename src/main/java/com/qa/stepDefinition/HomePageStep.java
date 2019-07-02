@@ -1,15 +1,21 @@
 package com.qa.stepDefinition;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+
+import com.cucumber.listener.Reporter;
 import com.qa.base.TestBase;
 import com.qa.pages.HomePage;
 import com.qa.pages.LoginPage;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -17,15 +23,17 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import junit.framework.Assert;
 
+
 public class HomePageStep extends TestBase {
 
 	LoginPage loginpageobj;
 	HomePage homepage;
-	public static ExtentReports reports;
-	   public static ExtentTest test;
-//	   
-//	   public HomePageStep()
-//	   {
+	//public static ExtentReports reports;
+	   //public static ExtentTest test;
+	   //TestContext testContext;  
+   //public HomePageStep()
+	   //{
+	   
 //		   DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");	   
 //			Date date = new Date(); 	 
 //			String ReportName= "CRReport"+"_"+dateFormat.format(date);		
@@ -35,32 +43,65 @@ public class HomePageStep extends TestBase {
 	public static void startTest()
 	
 	{
-	
-reports = new ExtentReports(System.getProperty("user.dir")+"\\ExtentReportResults.html");
+//		Reporter.setSystemInfo("User Name", System.getProperty("user.name"));
+//	     Reporter.setSystemInfo("Time Zone", System.getProperty("user.timezone"));
+//	     Reporter.setSystemInfo("Machine",prop.getProperty("username") );
+//	     Reporter.setSystemInfo("Selenium", "3.7.0");
+//	     Reporter.setSystemInfo("Maven", "3.5.2");
+//	     Reporter.setSystemInfo("Java Version", "1.8.0_151");
+		
+//reports = new ExtentReports(System.getProperty("user.dir")+"\\ExtentReportResults.html");
 //	reports
 //    .addSystemInfo("Host Name", "CucumberProject")
 //    .addSystemInfo("Environment", "Automation Testing")
 //    .addSystemInfo("User Name", "CucumberUser");
 	
 //	test = reports.startTest("HomePageStep");
-		reports.addSystemInfo("username", "viji");
+		//reports.addSystemInfo("username", "viji");
 			
 	}
 
 	
-	@After()
-	public static void endTest()
-	
-	{
+	//@After()
+//	public static void endTest()
+//	
+//	{
+//		
+//		Reporter.loadXMLConfig(new File("C:\\Users\\vraja\\workspace\\POMWithBDDFramework\\src\\main\\java\\com\\qa\\resources\\extent-config.xml"));
+//		//Reporter.setSystemInfo("Test User", System.getProperty("user.name"));
+//		Reporter.setSystemInfo("User Name", "AJ");
+//		Reporter.setSystemInfo("Application Name", "Test App ");
+//		Reporter.setSystemInfo("Operating System Type", System.getProperty("os.name").toString());
+//		Reporter.setSystemInfo("Environment", "Production");
+//		Reporter.setTestRunnerOutput("Test Execution Cucumber Report");
+//		}
+//		
 		
 	
-	reports.endTest(test);
+	//reports.endTest(test);
 	
-	reports.flush();
+	//reports.flush();
 	
+	
+	
+	@After
+	public void afterScenario(Scenario scenario){
+	    try{
+	        if(scenario.isFailed()){
+	            // More code goes here.
+	        	TestBase.getScreenshot();
+	        }else {
+	            //------------------------- Attaching Screen shot in the Report -------------------------
+	            byte[] screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
+	            scenario.embed(screenshot, "image/png");
+	            TestBase.getScreenshot();
+	        }
+	        //ExtentManager.getReporter().flush();
+	    }
+	    catch(Exception e){
+	        scenario.write("WARNING. Failed to take screenshot with following exception : "+e.getMessage());
+	    }
 	}
-	
-	
 
 	
 

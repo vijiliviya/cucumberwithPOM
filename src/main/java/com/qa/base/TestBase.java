@@ -1,11 +1,17 @@
 package com.qa.base;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -53,7 +59,22 @@ public class TestBase {
 			
 		}
 		
-	
+		
+		public static String getScreenshot() throws Exception {
+			String destination = null;
+			try {
 
-	
+				String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+				TakesScreenshot ts = (TakesScreenshot) driver;
+				File source = ts.getScreenshotAs(OutputType.FILE);
+				destination = System.getProperty("user.dir") + "/FailedTestsScreenshots/" + "_" + dateName
+						+ ".png";
+				File finalDestination = new File(destination);
+				FileUtils.copyFile(source, finalDestination);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return destination;
+		}	
 }
