@@ -30,17 +30,7 @@ public class HomePageStep extends TestBase {
 
 	LoginPage loginpageobj;
 	HomePage homepage;
-	//public static ExtentReports reports;
-	   //public static ExtentTest test;
-	   //TestContext testContext;  
-   //public HomePageStep()
-	   //{
-	   
-//		   DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");	   
-//			Date date = new Date(); 	 
-//			String ReportName= "CRReport"+"_"+dateFormat.format(date);		
-//			reports=new ExtentReports("..\\POMWithBDDFramework\\Reports\\" + ReportName + ".html");
-////	   }
+	
 	@Before()
 	public static void startTest()
 
@@ -53,6 +43,8 @@ public class HomePageStep extends TestBase {
 	
 	@After()
 	public void afterScenario(Scenario scenario) throws IOException{
+		try
+		{
 		if (scenario.isFailed()) 
 
 		{
@@ -60,30 +52,25 @@ public class HomePageStep extends TestBase {
 			 String screenshotName = scenario.getName().replaceAll(" ", "_");
 		
 		File sourcePath = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE); 
+		
+		DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");	   
+		Date date = new Date(); 	 
+		String ReportName= screenshotName+"_"+dateFormat.format(date);		
+//		reports=new ExtentReports("..\\POMWithBDDFramework\\Reports\\" + ReportName + ".html");
 		//Building up the destination path for the screenshot to save
 		 //Also make sure to create a folder 'screenshots'
-		File destinationPath = new File(System.getProperty("user.dir") + "/screenshot/" + screenshotName + ".png");
+		File destinationPath = new File(System.getProperty("user.dir") + "/screenshot/" + ReportName + ".png");
 
 		 //Copy taken screenshot from source location to destination location
 		Files.copy(sourcePath, destinationPath); 
 		//This attach the specified screenshot to the test
 		Reporter.addScreenCaptureFromPath(destinationPath.toString());
 		}
-//	    try{
-//	        if(scenario.isFailed()){
-//	            // More code goes here.
-//	        	
-//	        }else {
-//	            //------------------------- Attaching Screen shot in the Report -------------------------
-////	            byte[] screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
-////	            scenario.embed(screenshot, "image/png");
-//	            TestBase.getScreenshot();
-//	        }
-//	        //ExtentManager.getReporter().flush();
-//	    }
-//	    catch(Exception e){
-//	        scenario.write("WARNING. Failed to take screenshot with following exception : "+e.getMessage());
-//	    }
+		}
+    
+    catch(Exception e){
+        scenario.write("WARNING. Failed to take screenshot with following exception : "+e.getMessage());
+	    }
 		
 		System.out.println("after");
 	}

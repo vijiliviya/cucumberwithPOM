@@ -29,10 +29,10 @@ public class TestBase {
 			FileInputStream ip = new FileInputStream(System.getProperty("user.dir")+"\\src\\main\\java\\com\\qa\\config\\config.properties");
 			prop.load(ip);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}
@@ -60,21 +60,4 @@ public class TestBase {
 		}
 		
 		
-		public static String getScreenshot() throws Exception {
-			String destination = null;
-			try {
-
-				String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
-				TakesScreenshot ts = (TakesScreenshot) driver;
-				File source = ts.getScreenshotAs(OutputType.FILE);
-				destination = System.getProperty("user.dir") + "/FailedTestsScreenshots/" + "_" + dateName
-						+ ".png";
-				File finalDestination = new File(destination);
-				FileUtils.copyFile(source, finalDestination);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return destination;
-		}	
 }
